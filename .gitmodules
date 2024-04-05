@@ -1,0 +1,3 @@
+[submodule "np-projekt-app"]
+	path = np-projekt-app
+	url = https://github.com/Tsugumik/np-projekt-app

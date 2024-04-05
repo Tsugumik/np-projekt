@@ -1,0 +1,13 @@
+{
+    "name": "Projekt narzędzia programistyczne",
+    "dockerComposeFile": ["docker-compose.dev.yml"],
+    "customizations": {
+        "vscode": {
+            "extensions": ["svelte.svelte-vscode", "bradlc.vscode-tailwindcss", "prisma.prisma"]
+        }
+    },
+    "service": "np-projekt-app",
+    "runServices": ["db"],
+    "shutdownAction": "stopCompose",
+    "workspaceFolder": "/usr/src/app"
+}
