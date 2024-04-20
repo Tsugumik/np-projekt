@@ -11,10 +11,19 @@ services:
     volumes:
       - ./np-projekt-app:/usr/src/app
       - /usr/src/app/node_modules
+    depends_on:
+      db:
+        condition: service_healthy
   db:
     image: mysql
     restart: on-failure
     environment:
       - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
+      - MYSQL_DATABASE=test
     ports:
       - 3306:3306
+    healthcheck:
+      # Dzięki temu aplikacja startuje dopiero kiedy baza danych jest poprawnie uruchomiona
+      test: ["CMD", 'mysqladmin', 'ping', '-h', 'localhost', '-u', 'root', '-p$$MYSQL_ROOT_PASSWORD' ]
+      timeout: 30s
+      retries: 15
