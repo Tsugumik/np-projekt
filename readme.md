@@ -13,8 +13,8 @@
 ### Instalacja serwera ssh
 - Przy instalacji Ubuntu Server zaznaczyliśmy opcję automatycznej instalacji serwera SSH.
 ### Instalacja interpretera Python
-```sh
-```
+Python został zainstalowany automatycznie wraz z systemem Ubuntu Server. Nie instalowaliśmy go ręcznie.
+
 ### Instalacja kompilatora C/C++
 ```sh
 ```
