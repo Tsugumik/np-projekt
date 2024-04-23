@@ -42,3 +42,7 @@ sudo usermod -aG docker $USER
 docker run hello-world
 ```
 ![Instalcja dockera](img/hellodocker.png)
+
+[Dokumentacja dockera dotycząca instalacja](https://docs.docker.com/engine/install/ubuntu/)
+
+[Dokumentacja dockera dotycząca dodawania użytkonika do grupy dockera](https://docs.docker.com/engine/install/linux-postinstall/)
