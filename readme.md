@@ -17,7 +17,9 @@ Python został zainstalowany automatycznie wraz z systemem Ubuntu Server. Nie in
 
 ### Instalacja kompilatora C/C++
 ```sh
+sudo apt install g++
 ```
+![Instalacja g++](./img/screeng++.png)
 
 ### Instalacja dockera
 ```sh
