@@ -1,0 +1,29 @@
+services:
+  np-projekt-app:
+    image: np-projekt-app
+    restart: on-failure
+    build:
+      context: ./np-projekt-app
+      dockerfile: Dockerfile.dev
+    ports:
+      - 5173:5173
+      - 24678:24678
+    volumes:
+      - ./np-projekt-app:/usr/src/app
+      - /usr/src/app/node_modules
+    depends_on:
+      db:
+        condition: service_healthy
+  db:
+    image: mysql
+    restart: on-failure
+    environment:
+      - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
+      - MYSQL_DATABASE=np_app_db
+    ports:
+      - 3306:3306
+    healthcheck:
+      # Dzięki temu aplikacja startuje dopiero kiedy baza danych jest poprawnie uruchomiona
+      test: ["CMD", 'mysqladmin', 'ping', '-h', 'localhost', '-u', 'root', '-p$$MYSQL_ROOT_PASSWORD' ]
+      timeout: 30s
+      retries: 15
