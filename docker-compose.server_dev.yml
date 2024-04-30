@@ -27,6 +27,8 @@ services:
       - "50000:50000"
     environment:
       - JENKINS_OPTS="--prefix=/ci"
+    volumes:
+      - ./jenkins-data/jenkins_home:/var/jenkins_home
   nginx:
     image: nginx:latest
     container_name: nginx_rp
