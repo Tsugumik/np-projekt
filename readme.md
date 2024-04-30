@@ -46,3 +46,9 @@ docker run hello-world
 [Dokumentacja dockera dotycząca instalacja](https://docs.docker.com/engine/install/ubuntu/)
 
 [Dokumentacja dockera dotycząca dodawania użytkonika do grupy dockera](https://docs.docker.com/engine/install/linux-postinstall/)
+
+### Instalacja mDNS (avahi-daemon)
+```sh
+sudo apt update
+sudo apt install avahi-daemon
+```
