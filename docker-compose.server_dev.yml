@@ -10,6 +10,7 @@ services:
       - USER_UID=1000
       - USER_GID=1000
       - GITEA__server__ROOT_URL=http://myserv.local/svn
+      - GITEA__webhook__ALLOWED_HOST_LIST=myserv.local
     restart: always
     networks:
       - gitea
