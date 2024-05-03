@@ -257,3 +257,11 @@ docker compose -f "docker-compose.server_dev.yml" up -d --build
 Warto zaznaczyć, że ustawienia Gitea oraz Jenkinsa są zachowywane na dysku pomimo użycia Dockera dzięki wolumenom. Możemy nawet usunąć wszystkie kontenery, odinstalować dockera, a po jego ponownym zainstalowaniu projekt uruchomi się jakby nigdy nic.
 
 Jeśli projekt jest już skonfigurowany to powinien sam uruchamiać się ze startem systemu bez żadnej ingerencji użytkownika.
+
+## Podsumowanie
+
+Dzięki wykorzystaniu nowoczesnych narzędzi programistycznych nasz projekt jest zupełnie bezproblemowy w obsłudze, prawie w całości nie zależy od serwera, na którym się znajduje, łatwo go przenieść na zupełnie nową maszynę.
+
+Całość jest bardzo dobrze uporządkowana pomimo mnogości plików. Łatwo można się dowiedzieć, który plik do czego służy.
+
+Dzięki wykorzystaniu Dockera oraz dodatku Dev Containers z Visual Studio Code tworzenie projektu było wyjątkowo przyjemne i ciekawe. Pozwoliło też rozwinąć umiejętność czytania dokumentacji ze zrozumieniem i wyszukiwania informacji na forach internetowych.
