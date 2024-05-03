@@ -28,6 +28,7 @@ services:
       - "222:22" 
   jenkins:
     image: jenkins
+    restart: always
     build:
       # Używamy "customowego" obrazu Jenkinsa z zainstalowanym Dockerem
       dockerfile: Dockerfile.jenkins
@@ -43,6 +44,7 @@ services:
       - /var/run/docker.sock:/var/run/docker.sock
   nginx:
     image: nginx:latest
+    restart: always
     container_name: nginx_rp
     network_mode: host
     volumes:
