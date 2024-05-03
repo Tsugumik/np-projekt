@@ -1,3 +1,7 @@
+# Dokumentacje oraz inne źródła, których używaliśmy podczas tworzenia tego pliku
+# https://docs.gitea.com/installation/install-with-docker
+# https://www.jenkins.io/doc/book/installing/docker/
+# https://umasrinivask.medium.com/configure-nginx-as-a-reverse-proxy-with-docker-compose-file-4ebba2b75c89
 networks:
   gitea:
     external: false
@@ -10,6 +14,7 @@ services:
       - USER_UID=1000
       - USER_GID=1000
       - GITEA__server__ROOT_URL=http://myserv.local/svn
+      # Bez tego Gitea nie jest w stanie powiadomić Jenkinsa o zmianach w repozytorium
       - GITEA__webhook__ALLOWED_HOST_LIST=myserv.local
     restart: always
     networks:
@@ -24,6 +29,7 @@ services:
   jenkins:
     image: jenkins
     build:
+      # Używamy "customowego" obrazu Jenkinsa z zainstalowanym Dockerem
       dockerfile: Dockerfile.jenkins
     ports:
       - "8080:8080"
@@ -32,6 +38,8 @@ services:
       - JENKINS_OPTS="--prefix=/ci"
     volumes:
       - ./jenkins-data/jenkins_home:/var/jenkins_home
+      # Aby uchronić się przed uruchamianiem Dockera w Dockerze, przekazujemy za pomocą
+      # wolumenu socket dockera z hosta do instancji Jenkinsa.
       - /var/run/docker.sock:/var/run/docker.sock
   nginx:
     image: nginx:latest

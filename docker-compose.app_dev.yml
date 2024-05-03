@@ -1,3 +1,5 @@
+# Dokumentacje oraz inne źródła, których używaliśmy podczas tworzenia tego pliku
+# https://stackoverflow.com/questions/42567475/docker-compose-check-if-mysql-connection-is-ready
 services:
   np-projekt-app:
     image: np-projekt-app
