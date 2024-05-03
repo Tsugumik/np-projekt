@@ -30,6 +30,7 @@
 
 
 ## Konfiguracja serwera
+Serwer to w praktyce maszyna wirtualna uruchomiona w środowisku VMWare Workstation Pro 17.
 
 ### Instalacja serwera ssh
 
@@ -146,13 +147,17 @@ volumes:
       - /var/run/docker.sock:/var/run/docker.sock
 ```
 Przez to Jenkins uruchamia kontenery Dockera na maszynie hosta.
+
 ![Docker ps](./img/dockerps.png)
+
 Jak widać aplikacja oraz baza danych MySQL działa na tej samej maszynie co Jenkins, Gitea oraz Nginx.
 
 ![Jenkins Stage View](./img/jenkins_stageview.png)
+
 Po przejściu przez konfigurację Jenkins bez problemu wykonuje wszystkie wymagane przez nas kroki.
 
 ![Gitea zielona okejka](./img/gitea_jenkins_okejka.png)
+
 Wykonanie zadań przez Jenkinsa jest również widoczne w Gitea jako symbol zielonej strzałki obok nazwy ostatniego commita.
 
 #### Nginx
@@ -179,6 +184,76 @@ Jeśli chodzi o reverse proxy bazy danych nie widzieliśmy sensu tego robić, sk
 
 W każdym razie, Nginx jest tutaj używany w zasadzie prawie tak samo jak w rozwiązaniu z subdomenami i działa prawidłowo.
 
+Cała konfiguracja jest dostępna w pliku nginx.conf.
+
 #### MySQL
 
 MySQL jest elementem aplikacji, nie łączyliśmy się z bazą danych ręcznie ani razu. Wszystkie zadania związane z zarządzaniem bazą danych wykonuje ORM Prisma przy starcie aplikacji.
+
+### Aplikacja + testy
+
+Aplikacja, którą wykorzystaliśmy w projekcie to prosty CRUD wykonany w frameworku SvelteKit. Dzięki temu wykorzystaliśmy praktycznie bazę danych, mieliśmy też bardzo łatwy dostęp do testów jednostkowych.
+
+Przy łączeniu się z bazą danych korzystamy z ORM Prisma, typowego rozwiązania przy pisaniu aplikacji w języku TypeScript lub JavaScript, które łączą się z bazą danych.
+
+Testy jednostkowe znajdują się w pliku np-projekt-app/src/index.test.ts
+
+Do stylizowania interfejsu użyliśmy biblioteki Tailwind.
+
+Końcowy stack prezentował się następująco:
+
+- SvelteKit
+- Tailwind
+- Prisma
+- MySQL
+
+Czyli STPM.
+
+- Lista artykułów
+![Lista artykułów](./img/aplikacja.png)
+
+- Dodawanie nowego artykułu
+![Dodawanie nowego artykułu](./img/aplikacja_create.png)
+
+- Przeglądanie artykułu po jego id
+![Przeglądanie artykułu po jego id](./img/aplikacja_read.png)
+
+- Edytowanie istniejącego artykułu
+![Edytowanie istniejącego artykułu](./img/aplikacja_edit.png)
+
+Podsumowując: CREATE, READ, UPDATE, DELETE.
+
+#### Wymagania aplikacji
+
+Aby aplikacja się uruchomiła muszą być ustawione dwie zmienne środowiskowe. Od administratora zależy jak zostaną podane, w pliku .env, przez powłokę systemową czy inaczej.
+
+- DATABASE_URL
+  - "mysql://root:7bF4u9o9rcGxCwq@db:3306/np_app_db"
+- MYSQL_ROOT_PASSWORD 
+  - 7bF4u9o9rcGxCwq
+
+w naszym przypadku należy ustawić je w zakładce Credentials w Jenkins i podać je w pliku Jenkinsfile
+
+```groovy
+  environment {
+    DOCKER_IMAGE_NAME = 'np-projekt-app'
+    MYSQL_ROOT_PASSWORD = credentials('mysql-root-password')
+    DATABASE_URL = credentials('database-url')
+  }
+```
+
+## Uruchamianie projektu
+
+Jeśli Jenkins i Gitea nie są skonfigurowane:
+1. Należy uruchomić infrastrukturę SVN + CI/CD
+```sh
+docker compose -f "docker-compose.server_dev.yml" up -d --build
+```
+2. Skonfigurować Gitea oraz Jenkins
+3. Wrzucić na Gitea repozytorium z aplikacją
+4. Dodać organizację do Jenkinsa
+5. Jenkins powinien sam wykryć repozytorium, zbudować je oraz uruchomić aplikację
+
+Warto zaznaczyć, że ustawienia Gitea oraz Jenkinsa są zachowywane na dysku pomimo użycia Dockera dzięki wolumenom. Możemy nawet usunąć wszystkie kontenery, odinstalować dockera, a po jego ponownym zainstalowaniu projekt uruchomi się jakby nigdy nic.
+
+Jeśli projekt jest już skonfigurowany to powinien sam uruchamiać się ze startem systemu bez żadnej ingerencji użytkownika.
